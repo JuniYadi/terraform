@@ -17,7 +17,3 @@ output "ec2_public_ip" {
 output "ec2_public_dns" {
   value = module.ec2.ec2_public_dns
 }
-
-output "ec2_private_key_pem" {
-  value = module.ec2.private_key_pem
-}
