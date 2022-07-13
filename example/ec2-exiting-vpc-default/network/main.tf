@@ -76,7 +76,7 @@ data "aws_subnet" "current" {
 # Create Security Groups
 resource "aws_security_group" "sg" {
   for_each    = var.security_groups
-  name        = each.value.name
+  name        = "${each.value.name}-${var.instance_unique_id}"
   description = each.value.description
   vpc_id      = data.aws_vpc.default.id
 

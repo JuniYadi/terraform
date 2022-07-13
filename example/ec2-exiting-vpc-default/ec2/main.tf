@@ -6,11 +6,11 @@ resource "tls_private_key" "key" {
 
 # Generate a Private Key and encode it as PEM.
 resource "aws_key_pair" "key_pair" {
-  key_name   = "key"
+  key_name   = "tf-key-${var.instance_unique_id}"
   public_key = tls_private_key.key.public_key_openssh
 
   provisioner "local-exec" {
-    command = "echo '${tls_private_key.key.private_key_pem}' > ./key.pem"
+    command = "echo '${tls_private_key.key.private_key_pem}' > ./tf-key-${var.instance_unique_id}.pem && chmod 400 ./tf-key-${var.instance_unique_id}.pem"
   }
 }
 
@@ -40,7 +40,7 @@ resource "aws_instance" "node" {
   subnet_id              = var.public_subnet
 
   tags = {
-    Name = "TF Generated EC2"
+    Name = "tf-node-${var.instance_unique_id}"
   }
 
   user_data = file("${path.root}/ec2/userdata.tpl")
